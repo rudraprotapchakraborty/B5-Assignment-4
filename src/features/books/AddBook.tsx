@@ -4,6 +4,15 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 
 export default function AddBook() {
+  const genres = [
+    "FICTION",
+    "NON_FICTION",
+    "SCIENCE",
+    "HISTORY",
+    "BIOGRAPHY",
+    "FANTASY",
+  ] as const;
+
   const [form, setForm] = useState({
     title: "",
     author: "",
@@ -33,9 +42,6 @@ export default function AddBook() {
       await addBook(form).unwrap();
       toast.success("Book added successfully!");
       navigate("/books");
-      // setTimeout(() => {
-      //   window.location.reload();
-      // }, 1000);
     } catch {
       toast.error("Failed to add book.");
     }
@@ -50,7 +56,7 @@ export default function AddBook() {
         Add New Book
       </h2>
 
-      {["title", "author", "genre", "isbn"].map((field) => (
+      {["title", "author", "isbn"].map((field) => (
         <div key={field}>
           <label className="block text-sm font-medium text-gray-700 mb-1 capitalize">
             {field}
@@ -65,6 +71,28 @@ export default function AddBook() {
           />
         </div>
       ))}
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1 capitalize">
+          genre
+        </label>
+        <select
+          name="genre"
+          value={form.genre}
+          onChange={handleChange}
+          className="w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none transition"
+          required
+        >
+          <option value="" disabled>
+            Select genre
+          </option>
+          {genres.map((g) => (
+            <option key={g} value={g}>
+              {g.replace("_", " ")}
+            </option>
+          ))}
+        </select>
+      </div>
 
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">
