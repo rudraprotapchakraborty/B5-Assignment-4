@@ -17,6 +17,15 @@ export default function EditBook() {
     copies: 1,
   });
 
+  const genres = [
+    "FICTION",
+    "NON_FICTION",
+    "SCIENCE",
+    "HISTORY",
+    "BIOGRAPHY",
+    "FANTASY",
+  ] as const;
+
   useEffect(() => {
     if (book && book.data) {
       const b = book.data;
@@ -32,7 +41,9 @@ export default function EditBook() {
   }, [book]);
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target;
     setForm((prev) => ({
@@ -55,36 +66,81 @@ export default function EditBook() {
   if (isLoading) return <p>Loading book data...</p>;
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-lg mx-auto mt-8 space-y-4">
+    <form onSubmit={handleSubmit} className="max-w-lg mx-auto mt-8 space-y-6">
       <h2 className="text-2xl font-bold mb-4">Edit Book</h2>
-      {["title", "author", "genre", "isbn"].map((field) => (
+
+      {["title", "author", "isbn"].map((field) => (
+        <div key={field}>
+          <label htmlFor={field} className="block mb-1 font-medium capitalize">
+            {field}
+          </label>
+          <input
+            id={field}
+            name={field}
+            value={form[field as keyof typeof form]}
+            onChange={handleChange}
+            className="w-full border px-3 py-2 rounded"
+            required
+          />
+        </div>
+      ))}
+
+      <div>
+        <label htmlFor="genre" className="block mb-1 font-medium capitalize">
+          Genre
+        </label>
+        <select
+          id="genre"
+          name="genre"
+          value={form.genre}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded"
+          required
+        >
+          <option value="" disabled>
+            Select genre
+          </option>
+          {genres.map((g) => (
+            <option key={g} value={g}>
+              {g.replace("_", " ")}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <label
+          htmlFor="description"
+          className="block mb-1 font-medium capitalize"
+        >
+          Description
+        </label>
+        <textarea
+          id="description"
+          name="description"
+          value={form.description}
+          onChange={handleChange}
+          className="w-full border px-3 py-2 rounded"
+          rows={4}
+        />
+      </div>
+
+      <div>
+        <label htmlFor="copies" className="block mb-1 font-medium capitalize">
+          Copies
+        </label>
         <input
-          key={field}
-          name={field}
-          placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-          value={form[field as keyof typeof form]}
+          id="copies"
+          name="copies"
+          type="number"
+          min={0}
+          value={form.copies}
           onChange={handleChange}
           className="w-full border px-3 py-2 rounded"
           required
         />
-      ))}
-      <textarea
-        name="description"
-        placeholder="Description"
-        value={form.description}
-        onChange={handleChange}
-        className="w-full border px-3 py-2 rounded"
-      />
-      <input
-        name="copies"
-        type="number"
-        min={0}
-        placeholder="Copies"
-        value={form.copies}
-        onChange={handleChange}
-        className="w-full border px-3 py-2 rounded"
-        required
-      />
+      </div>
+
       <button
         type="submit"
         className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600"
