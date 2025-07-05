@@ -47,9 +47,6 @@ export default function EditBook() {
       await updateBook({ id: id!, data: form }).unwrap();
       toast.success("Book updated successfully!");
       navigate("/books");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
     } catch {
       toast.error("Failed to update book");
     }

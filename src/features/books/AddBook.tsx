@@ -31,13 +31,13 @@ export default function AddBook() {
     e.preventDefault();
     try {
       await addBook(form).unwrap();
-      toast.success("✅ Book added successfully!");
+      toast.success("Book added successfully!");
       navigate("/books");
       setTimeout(() => {
         window.location.reload();
       }, 1000);
     } catch {
-      toast.error("❌ Failed to add book.");
+      toast.error("Failed to add book.");
     }
   };
 

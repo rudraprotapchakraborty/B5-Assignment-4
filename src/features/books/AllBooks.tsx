@@ -25,9 +25,9 @@ export default function AllBooks() {
     if (!selectedBookId) return;
     try {
       await deleteBook(selectedBookId).unwrap();
-      toast.success("✅ Book deleted successfully!");
+      toast.success("Book deleted successfully!");
     } catch {
-      toast.error("❌ Failed to delete book.");
+      toast.error("Failed to delete book.");
     } finally {
       closeModal();
     }

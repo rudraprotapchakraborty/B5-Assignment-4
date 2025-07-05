@@ -1,54 +1,61 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export interface Book {
-  _id: string
-  title: string
-  author: string
-  genre: string
-  isbn: string
-  description?: string
-  copies: number
-  available?: boolean
+  _id: string;
+  title: string;
+  author: string;
+  genre: string;
+  isbn: string;
+  description?: string;
+  copies: number;
+  available?: boolean;
 }
 
 export const apiSlice = createApi({
-  reducerPath: 'api',
+  reducerPath: "api",
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://b5-assignment-3-rosy.vercel.app/api',
+    baseUrl: "https://b5-assignment-3-rosy.vercel.app/api",
   }),
-  tagTypes: ['Books', 'BorrowSummary'],
+  tagTypes: ["Books", "BorrowSummary"],
   endpoints: (builder) => ({
     getBooks: builder.query<Book[], void>({
-      query: () => '/books',
-      transformResponse: (response: { success: boolean; message: string; data: any[] }) => response.data,
-      providesTags: ['Books'],
+      query: () => "/books",
+      transformResponse: (response: {
+        success: boolean;
+        message: string;
+        data: any[];
+      }) => response.data,
+      providesTags: ["Books"],
     }),
     getBookById: builder.query<Book, string>({
       query: (id) => `/books/${id}`,
-      providesTags: (result, error, id) => [{ type: 'Books', id }],
+      providesTags: (result, error, id) => [{ type: "Books", id }],
     }),
     createBook: builder.mutation<Book, Partial<Book>>({
       query: (body) => ({
-        url: '/books',
-        method: 'POST',
+        url: "/books",
+        method: "POST",
         body,
       }),
-      invalidatesTags: ['Books'],
+      invalidatesTags: ["Books"],
     }),
     updateBook: builder.mutation<Book, { id: string; data: Partial<Book> }>({
       query: ({ id, data }) => ({
         url: `/books/${id}`,
-        method: 'PUT',
+        method: "PUT",
         body: data,
       }),
-      invalidatesTags: (result, error, { id }) => [{ type: 'Books', id }],
+      invalidatesTags: (result, error, { id }) => [
+        { type: "Books", id },
+        { type: "Books" },
+      ],
     }),
     deleteBook: builder.mutation<{ success: boolean; id: string }, string>({
       query: (id) => ({
         url: `/books/${id}`,
-        method: 'DELETE',
+        method: "DELETE",
       }),
-      invalidatesTags: ['Books'],
+      invalidatesTags: ["Books"],
     }),
     borrowBook: builder.mutation<
       any,
@@ -56,21 +63,25 @@ export const apiSlice = createApi({
     >({
       query: ({ book, quantity, dueDate }) => ({
         url: `/borrow`,
-        method: 'POST',
+        method: "POST",
         body: { book, quantity, dueDate },
       }),
-      invalidatesTags: ['Books', 'BorrowSummary'],
+      invalidatesTags: ["Books", "BorrowSummary"],
     }),
     getBorrowSummary: builder.query<
       { bookTitle: string; isbn: string; totalQuantity: number }[],
       void
     >({
-      query: () => '/borrow',
-      transformResponse: (response: { success: boolean; message: string; data: any[] }) => response.data,
-      providesTags: ['BorrowSummary'],
+      query: () => "/borrow",
+      transformResponse: (response: {
+        success: boolean;
+        message: string;
+        data: any[];
+      }) => response.data,
+      providesTags: ["BorrowSummary"],
     }),
   }),
-})
+});
 
 export const {
   useGetBooksQuery,
@@ -80,4 +91,4 @@ export const {
   useDeleteBookMutation,
   useBorrowBookMutation,
   useGetBorrowSummaryQuery,
-} = apiSlice
+} = apiSlice;
