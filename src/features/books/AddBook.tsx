@@ -33,9 +33,9 @@ export default function AddBook() {
       await addBook(form).unwrap();
       toast.success("Book added successfully!");
       navigate("/books");
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      // setTimeout(() => {
+      //   window.location.reload();
+      // }, 1000);
     } catch {
       toast.error("Failed to add book.");
     }

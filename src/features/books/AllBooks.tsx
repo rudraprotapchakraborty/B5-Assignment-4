@@ -4,7 +4,9 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 
 export default function AllBooks() {
-  const { data: books, isLoading, isError } = useGetBooksQuery();
+  const { data: books, isLoading, isError } = useGetBooksQuery(undefined,{
+    refetchOnMountOrArgChange: true,
+  });
   const [deleteBook, { isLoading: isDeleting }] = useDeleteBookMutation();
   const navigate = useNavigate();
 

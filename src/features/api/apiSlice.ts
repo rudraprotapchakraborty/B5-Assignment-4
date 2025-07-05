@@ -1,15 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-
-export interface Book {
-  _id: string;
-  title: string;
-  author: string;
-  genre: string;
-  isbn: string;
-  description?: string;
-  copies: number;
-  available?: boolean;
-}
+import { Book } from "../../types";
 
 export const apiSlice = createApi({
   reducerPath: "api",
