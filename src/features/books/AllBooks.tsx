@@ -2,9 +2,16 @@ import { useGetBooksQuery, useDeleteBookMutation } from "../api/apiSlice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { FaEdit } from "react-icons/fa";
+import { MdDelete } from "react-icons/md";
+import { FaBook } from "react-icons/fa";
 
 export default function AllBooks() {
-  const { data: books, isLoading, isError } = useGetBooksQuery(undefined,{
+  const {
+    data: books,
+    isLoading,
+    isError,
+  } = useGetBooksQuery(undefined, {
     refetchOnMountOrArgChange: true,
   });
   const [deleteBook, { isLoading: isDeleting }] = useDeleteBookMutation();
@@ -37,8 +44,7 @@ export default function AllBooks() {
 
   if (isLoading)
     return <p className="p-6 text-gray-500 animate-pulse">Loading books...</p>;
-  if (isError)
-    return <p className="p-6 text-red-500">Error loading books.</p>;
+  if (isError) return <p className="p-6 text-red-500">Error loading books.</p>;
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -90,19 +96,22 @@ export default function AllBooks() {
                   </td>
                   <td className="px-5 py-3 flex flex-wrap gap-2">
                     <button
+                      title="Edit"
                       onClick={() => navigate(`/edit-book/${book._id}`)}
                       className="bg-yellow-400 hover:bg-yellow-500 text-black px-3 py-1 rounded text-xs font-medium transition"
                     >
-                      Edit
+                      <FaEdit />
                     </button>
                     <button
+                      title="Delete"
                       onClick={() => openModal(book._id)}
                       disabled={isDeleting}
                       className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-xs font-medium transition disabled:opacity-50"
                     >
-                      Delete
+                      <MdDelete />
                     </button>
                     <button
+                      title="Borrow"
                       onClick={() => navigate(`/borrow/${book._id}`)}
                       disabled={book.copies === 0}
                       className={`px-3 py-1 rounded text-xs font-medium transition ${
@@ -111,7 +120,7 @@ export default function AllBooks() {
                           : "bg-green-600 hover:bg-green-700 text-white"
                       }`}
                     >
-                      Borrow
+                      <FaBook />
                     </button>
                   </td>
                 </tr>
