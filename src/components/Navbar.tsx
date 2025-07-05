@@ -8,7 +8,7 @@ export default function Navbar() {
           to="/"
           className="flex text-2xl font-semibold text-gray-800 hover:text-blue-600 transition"
         >
-          <img className="w-8 mr-2" src="../../public/logo.png" alt="" />
+          <img className="w-8 mr-2" src="/logo.png" alt="" />
           Library Management System
         </Link>
         <div className="flex space-x-6">
